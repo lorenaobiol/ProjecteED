@@ -31,3 +31,31 @@ Notes:
     - Els UUID s'emmagatzemen com a strings
     - Un UUID només es pot generar una vegada (fins que s'elimini)
 """
+import cfg
+class ImageID:
+    """
+    Aquesta classe s'encarrega de generar i gestionar identificadors únics (UUID)
+    per a cada imatge de la col·lecció.
+    """
+    Registre_UUID: set # Conjunt per emmagatzemar els UUID generats
+
+    def __init__(self):
+        self.Registre_UUID = set()
+
+    def generate_uuid(self,file: str) -> str:
+        uuid = str(cfg.get_uuid(file))
+        if uuid in self.Registre_UUID:
+            print(f"Aquest UUID ja està en ús.")
+            return None
+        else:
+            self.Registre_UUID.add(uuid)
+            return uuid
+
+    def get_uuid(self,file:str):
+        uuid = str(cfg.get_uuid(file))
+        if uuid in self.Registre_UUID: return uuid
+        else: return None
+
+    def remove_uuid(self,uuid:str):
+        if uuid in self.Registre_UUID:
+            self.Registre_UUID.remove(uuid)
